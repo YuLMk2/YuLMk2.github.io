@@ -34,20 +34,21 @@
 	var cardType, cardloc, star, atk, def, icon, starS, asset, effect;
 	////
 
-	cardType = dRes(cat);
+	//ASSET
+	cardType = dRes(cat); //타입(0~14)
 	effect = "";
-	if(cardType < 10){
-		asset = rac[dRes(rac)] + "\n" + att[dRes(att)] + "\n" + cat[cardType] + "\n";
+	if(cardType < 10){ //타입 == 몬스터
+		asset = rac[dRes(rac)] + "\n" + att[dRes(att)] + "\n" + cat[cardType] + "\n";//종족, 속성, 타입
 		starS = "★";
 		star = rD(12);
 		atk = (star*3)+rD(4)+rD(4);
 		def = [(star*2)+rD(6)+rD(6)+rD(6)]*100;
-		if (cardType == 3) {
+		if (cardType == 3) {//링크의 ★ 표기 변경, 링크는 1~4, 공격력 보정, 수비력을 링크마커로 변경
 			starS = "L"
 			star = rD(4);
 			atk += (4*star)-2;
 			def = "";
-			for (i = 0; i < star; i++) {
+			for (i = 0; i < star; i++) {//링크마커 루프(중복 안나오게)
 				while (true) {
 					icon=lnk[dRes(lnk)];
 					if (def.indexOf(icon)<0) {
@@ -57,33 +58,35 @@
 				}
 			}
 		}
-		else if (cardType == 1) star = rD(11)+1;
-		asset += starS + star + "\n" + (atk*100) + " / " + def;
+		else if (cardType == 1) star = rD(11)+1; //싱크로는 레벨 1 불가능
+		asset += starS + star + "\n" + (atk*100) + " / " + def; // ★(L), 공격력, 수비력(링크마커)
 	}
-	else{
-		while (true){
+	else{//카드 타입 == 마법 / 함정
+		while (true){//아이콘 루프
 			icon=rD(6);
-			if (cardType>12 && icon>3) break;
-			else if (cardType<13 && icon!=6) break;
-		}
-		asset = cat[cardType] + "\n" + ico[icon-1];
+			if (cardType>12 && icon>3) break;//(함정은 일반, 지속, 카운터)
+			else if (cardType<13 && icon!=6) break;//(마법은 속공, 장착, 필드, 일반, 지속)
+			
+		asset = cat[cardType] + "\n" + ico[icon-1];//타입, 아이콘
 	}
 
+	//EFFECT
 	for(i = 0; i < rD(3); i++) {
 		cardloc=1;
-		while (true){
-			if (cardType<9){
+		while (true){//효과 발동 장소 루프
+			if (cardType<9){//타입 == 몬스터
 				cardloc=rD(5);
-				if (cardType<4 && cardloc!=3) break;
-				else if (cardType>3 && cardloc!=2) break;
+				if (cardType<4 && cardloc!=3) break;//엑스트라 덱 몬스터(패 안나옴)
+				else if (cardType>3 && cardloc!=2) break;//메인 덱 몬스터(엑몹존 안나옴)
 			}
-			else{
-				cardloc=rD(3)+3;
+			else{// 타입 == 마법 / 함정
+				cardloc=rD(3)+3;//(몹존 / 엑몹존 / 패 안나옴)
 				break;
 			}
 		}
-		if (cardType>9 && i==0) cardloc=6;
+		if (cardType>9 && i==0) cardloc=6;//마법 / 함정 카드의 첫 번째 효과는 무조건 마함존에서 발동
 		effect += ("\n\n효과 " + (i+1) + " =====\n" + eff[dRes(eff)] + "\n" + loc[cardloc-1] + "\n" + scl[dRes(scl)])
+		//효과 넘버, 효과 카테고리, 효과 발동장소, 효과 턴제
 	}
 	
 	var finalText = document.getElementById('card');
