@@ -4,7 +4,7 @@
 </head>
 <body>
 
-	<h1>Random Orica Generator v1.1</h1>
+	<h1>Random Orica Generator v1.2</h1>
 
 	<textarea cols="50" rows="35" id='card'>ORICA!</textarea>
 
@@ -83,7 +83,7 @@
 			}
 		}
 		if (cardType>9 && i==0) cardloc=6;
-		effect += ("\n효과 " + (i+1) + " =====\n" + eff[dRes(eff)] + "\n" + loc[cardloc-1] + "\n" + scl[dRes(scl)] + "\n")
+		effect += ("\n\n효과 " + (i+1) + " =====\n" + eff[dRes(eff)] + "\n" + loc[cardloc-1] + "\n" + scl[dRes(scl)])
 	}
 	
 	var finalText = document.getElementById('card');
